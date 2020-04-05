@@ -52,7 +52,7 @@ let showGifs = async (item) => {
 		let title = document.createElement("p");
 		title.textContent = "Rating: " + e.rating;
 		let img = document.createElement("img");
-		img.onclick = (event) => (event.target.src = gifClick(event.target.src));
+		img.onclick = gifClick;
 		img.setAttribute("src", e.url);
 		imgHolder.append(title, img);
 		gifRow.appendChild(imgHolder);
@@ -64,8 +64,10 @@ let showGifs = async (item) => {
 	}
 	container.appendChild(gifRow);
 };
-let gifClick = (src) => {
-	return src.match(/^.*[0-9]{3}/g) + (/s.gif$/g.test(src) ? ".gif" : "_s.gif");
+let gifClick = (event) => {
+	let src = event.target.src;
+	event.target.src =
+		src.match(/^.*[0-9]{3}/g) + (/s.gif$/g.test(src) ? ".gif" : "_s.gif");
 };
 let getGifs = async (item) => {
 	let queryURL = `https://api.giphy.com/v1/gifs/search?api_key=${sensitive.apiKey}&q=${item}&limit=10&offset=0&rating=pg&lang=en`;
