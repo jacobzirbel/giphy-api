@@ -33,16 +33,38 @@ let generateButtons = (items) => {
 		let button = document.createElement("button");
 		button.setAttribute("class", "btn btn-primary");
 		button.textContent = e;
-		button.onclick = () => getGifs(e);
+		button.onclick = () => showGifs(e);
 		buttonsCol.appendChild(button);
 	});
 	topRow.insertBefore(buttonsCol, document.getElementById("new-item-input"));
 };
 
+let showGifs = async (item) => {
+	let gifData = await getGifs(item);
+	let gifRow = document.createElement("div");
+	gifRow.setAttribute("class", "row");
+	let gifCol = document.createElement("div");
+	gifCol.setAttribute("class", "col-md-12");
+	gifData.forEach((e) => {
+		let imgHolder = document.createElement("span");
+		imgHolder.setAttribute("class", "img-holder");
+		let title = document.createElement("p");
+		title.textContent = "Rating: " + e.rating;
+		let img = document.createElement("img");
+		img.setAttribute("src", e.url);
+		imgHolder.append(title, img);
+		gifRow.appendChild(imgHolder);
+	});
+
+	gifRow.appendChild(gifCol);
+	container.appendChild(gifRow);
+};
 let getGifs = async (item) => {
-	let queryURL = `https://api.giphy.com/v1/gifs/search?api_key=${sensitive.apiKey}&q=${item}&limit=10&offset=0&rating=G&lang=en`;
+	let queryURL = `https://api.giphy.com/v1/gifs/search?api_key=${sensitive.apiKey}&q=${item}&limit=10&offset=0&rating=pg&lang=en`;
 	let res = await apiGetRequest(queryURL);
-	console.log(res);
+	return res.data.map((e) => {
+		return { title: e.title, url: e.images.original.url, rating: e.rating };
+	});
 };
 
 let addSearchTerm = () => {
