@@ -20,6 +20,7 @@ let initialSetup = () => {
 	let submitButton = document.createElement("INPUT");
 	submitButton.setAttribute("type", "submit");
 	submitButton.setAttribute("class", "mt-2 btn-secondary");
+	submitButton.onclick = addSearchTerm;
 	inputF.append(title, textField, submitButton);
 	topRow.appendChild(inputF);
 	container.appendChild(topRow);
@@ -48,11 +49,10 @@ let showGifs = async (item) => {
 	gifData.forEach((e) => {
 		let imgHolder = document.createElement("span");
 		imgHolder.setAttribute("class", "img-holder");
-		imgHolder.onclick = (event) =>
-			(event.target.src = gifClick(event.target.src));
 		let title = document.createElement("p");
 		title.textContent = "Rating: " + e.rating;
 		let img = document.createElement("img");
+		img.onclick = (event) => (event.target.src = gifClick(event.target.src));
 		img.setAttribute("src", e.url);
 		imgHolder.append(title, img);
 		gifRow.appendChild(imgHolder);
