@@ -42,12 +42,14 @@ let generateButtons = (items) => {
 let showGifs = async (item) => {
 	let gifData = await getGifs(item);
 	let gifRow = document.createElement("div");
-	gifRow.setAttribute("class", "row");
+	gifRow.setAttribute("class", "row gif-row");
 	let gifCol = document.createElement("div");
 	gifCol.setAttribute("class", "col-md-12");
 	gifData.forEach((e) => {
 		let imgHolder = document.createElement("span");
 		imgHolder.setAttribute("class", "img-holder");
+		imgHolder.onclick = (event) =>
+			(event.target.src = gifClick(event.target.src));
 		let title = document.createElement("p");
 		title.textContent = "Rating: " + e.rating;
 		let img = document.createElement("img");
@@ -57,13 +59,24 @@ let showGifs = async (item) => {
 	});
 
 	gifRow.appendChild(gifCol);
+	if (document.getElementsByClassName("gif-row")[0]) {
+		container.removeChild(document.getElementsByClassName("gif-row")[0]);
+	}
 	container.appendChild(gifRow);
+};
+let gifClick = (src) => {
+	return src.match(/^.*[0-9]{3}/g) + (/s.gif$/g.test(src) ? ".gif" : "_s.gif");
 };
 let getGifs = async (item) => {
 	let queryURL = `https://api.giphy.com/v1/gifs/search?api_key=${sensitive.apiKey}&q=${item}&limit=10&offset=0&rating=pg&lang=en`;
 	let res = await apiGetRequest(queryURL);
+	console.log(res);
 	return res.data.map((e) => {
-		return { title: e.title, url: e.images.original.url, rating: e.rating };
+		return {
+			title: e.title,
+			url: `https://media3.giphy.com/media/${e.id}/200.gif`,
+			rating: e.rating,
+		};
 	});
 };
 
