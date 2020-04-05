@@ -29,6 +29,9 @@ let initialSetup = () => {
 };
 let generateButtons = (items) => {
 	let buttonsCol = document.createElement("div");
+	if (document.getElementsByClassName("buttons")[0]) {
+		topRow.removeChild(document.getElementsByClassName("buttons")[0]);
+	}
 	buttonsCol.setAttribute("class", "col-md-8 buttons");
 	items.forEach((e) => {
 		let button = document.createElement("button");
@@ -82,8 +85,9 @@ let getGifs = async (item) => {
 	});
 };
 
-let addSearchTerm = () => {
-	return true;
+let addSearchTerm = (e) => {
+	items.push(e.toElement.previousElementSibling.value);
+	generateButtons(items);
 };
 
 let apiGetRequest = (queryURL) => {
