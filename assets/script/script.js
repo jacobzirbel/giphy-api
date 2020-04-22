@@ -1,8 +1,6 @@
 window.onload = () => initialSetup();
 
-let items = "cat,dog,fish,deer,bird,cat,dog,fish,deer,bird,cat,dog,fish,deer,bird,cat,dog,fish,deer,bird,cat,dog,fish,deer,bird".split(
-		","
-	),
+let items = "cat,dog,fish,deer,bird,cat,dog,fish,deer,bird".split(","),
 	apiKey = sensitive.apiKey,
 	container,
 	topRow;
